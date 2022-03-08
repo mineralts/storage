@@ -1,5 +1,5 @@
 /*
- * packages/connector.test.ts
+ * @mineralts/storage.ts
  *
  * (c) Parmantier Baptiste
  *
@@ -8,14 +8,4 @@
  *
  */
 
-import Connector from './connector'
-import Socket from './socket'
-import Http from './http'
-import { WebsocketPayload } from './types'
-
-export {
-  Connector,
-  Socket,
-  Http,
-  WebsocketPayload,
-}
+export * from './types'
