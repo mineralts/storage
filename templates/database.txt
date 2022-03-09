@@ -1,0 +1,29 @@
+import { Application } from '@mineralts/core-preview'
+import { DatabaseConfig } from '@mineralts/storage-preview'
+
+const environment = Application.singleton().resolveBinding('Mineral/Core/Environment')
+const storage = environment.resolveKey('storage')
+
+const databaseConfig: DatabaseConfig = {
+  connection: storage.DB_CONNECTION,
+
+  connections: {
+    /*
+    |--------------------------------------------------------------------------
+    | SQLite
+    |--------------------------------------------------------------------------
+    |
+    | Configuration for the SQLite database.  Make sure to install the driver
+    | from npm when using this connection
+    |
+    | npm i sqlite3
+    |
+    */
+    sqlite: {
+      client: 'sqlite',
+      databaseLocation: 'database.sqlite'
+    }
+  }
+}
+
+export default databaseConfig

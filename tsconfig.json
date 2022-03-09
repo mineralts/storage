@@ -17,10 +17,12 @@
     "emitDecoratorMetadata": true
   },
   "include": [
-    "src/**/*"
+    "src/**/*",
+    "templates/**/*.txt"
   ],
   "exclude": [
     "build",
+    "mock",
     "tests",
   ]
 }

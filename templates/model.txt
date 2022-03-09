@@ -1,0 +1,12 @@
+import { Model, Primary, Column, DataTypes, MineralModal, Optional } from '@mineralts/storage-preview'
+
+type $ClassAttribute = {
+  id: number
+}
+type $ClassCreateAttribute = Optional<$ClassAttribute, 'id'>
+
+@Model()
+export default class User extends MineralModel {
+  @Primary({ type: DataTypes.INTEGER, autoIncrement: true })
+  declare id: number
+}
