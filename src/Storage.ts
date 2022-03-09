@@ -4,7 +4,7 @@ import { join } from 'node:path'
 import { DatabaseConfig } from './types'
 
 export default class Storage {
-  private sequelize!: Sequelize
+  public sequelize!: Sequelize
   private environment = Application.singleton().resolveBinding('Mineral/Core/Environment')
   private logger = Application.singleton().resolveBinding('Mineral/Core/Logger')
 
@@ -47,5 +47,10 @@ export default class Storage {
     } catch (error) {
       this.logger.fatal('Unable to connect to the database : ', error)
     }
+  }
+
+  public registerModel (model, payload) {
+    console.log(model, payload)
+    model.init({})
   }
 }
