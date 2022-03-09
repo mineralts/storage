@@ -20,8 +20,13 @@ export default class Instruction extends MineralPlugin {
       rcFile.providers = []
     }
 
+    if (!rcFile.commands) {
+      rcFile.commands = []
+    }
+
     if (!rcFile.providers.includes(moduleName)) {
       rcFile.providers.push(moduleName)
+      rcFile.commands.push(moduleName)
 
       await fs.writeFile(
         rcFileLocation,
