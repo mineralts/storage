@@ -9,7 +9,7 @@ export default class Storage {
   private logger = Application.singleton().resolveBinding('Mineral/Core/Logger')
 
   public async initialize () {
-    const root = this.environment.resolveKey('root')
+    const root = this.environment.resolveKey('APP_ROOT')
     const location = join(root!, 'config', 'database.ts')
 
     const { default: databaseConfig }: { default: DatabaseConfig } = await import(location)
@@ -17,13 +17,14 @@ export default class Storage {
 
     const drivers = {
       sqlite: () => this.initializeSqlite(connections.sqlite),
+      postgres: () => this.initializePostgres(connections.postgres),
     }
 
     driver in drivers
       ? drivers[databaseConfig.connection]()
       : this.unknownDriver(driver)
 
-    if (this.environment.resolveKey('debug')) {
+    if (this.environment.resolveKey('APP_DEBUG')) {
       await this.debug(driver)
     }
   }
@@ -33,6 +34,14 @@ export default class Storage {
       dialect: 'sqlite',
       storage: driverConfig.databaseLocation,
       logging: false
+    })
+  }
+
+  private initializePostgres (driverConfig) {
+    this.sequelize = new Sequelize(driverConfig.database, driverConfig.user, driverConfig.password, {
+      dialect: 'postgres',
+      port: driverConfig.port,
+      logging: false,
     })
   }
 

@@ -26,6 +26,14 @@ export interface DatabaseConfig {
     sqlite: {
       client: DatabaseDriver
       databaseLocation: string
+    },
+    postgres: {
+      client: DatabaseDriver
+      host: string
+      port: string
+      user: string
+      password: string
+      database: string
     }
   }
 }

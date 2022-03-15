@@ -2,10 +2,9 @@ import { Application } from '@mineralts/core-preview'
 import { DatabaseConfig } from '@mineralts/storage-preview'
 
 const environment = Application.singleton().resolveBinding('Mineral/Core/Environment')
-const storage = environment.resolveKey('storage')
 
 const databaseConfig: DatabaseConfig = {
-  connection: storage.DB_CONNECTION,
+  connection: environment.resolveKey('DB_CONNECTION'),
 
   connections: {
     /*
@@ -21,7 +20,27 @@ const databaseConfig: DatabaseConfig = {
     */
     sqlite: {
       client: 'sqlite',
-      databaseLocation: 'database.sqlite'
+      databaseLocation: environment.resolveKey('DB_NAME'),
+    },
+
+    /*
+    |--------------------------------------------------------------------------
+    | Postgres
+    |--------------------------------------------------------------------------
+    |
+    | Configuration for the SQLite database.  Make sure to install the driver
+    | from npm when using this connection
+    |
+    | npm i pg
+    |
+    */
+    postgres: {
+      client: 'postgres',
+      host: environment.resolveKey('DB_HOST'),
+      user: environment.resolveKey('DB_USER'),
+      password: environment.resolveKey('DB_PASSWORD'),
+      port: environment.resolveKey('DB_PORT'),
+      database: environment.resolveKey('DB_NAME'),
     }
   }
 }
