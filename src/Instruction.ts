@@ -52,24 +52,29 @@ export default class Instruction extends MineralModule {
 
   protected async alterEnvironment (root, payload: string) {
     const environmentLocation = join(root, '.env')
-    const environmentRaw = (await fs.readFile(environmentLocation, 'utf-8'))
+    const environmentRaw: string = (await fs.readFile(environmentLocation, 'utf-8'))
     const environment = environmentRaw.split(EOL)
+    const keepEnvironment = environment.filter((key: string) => !key.startsWith('DB_'))
 
-    if (!environmentRaw.includes('DB_CONNECTION')) {
-      environment.push(EOL)
-      environment.push(`DB_CONNECTION: ${payload.toLowerCase()}`)
-    }
+    keepEnvironment.push(`DB_CONNECTION: ${payload.toLowerCase()}`)
 
     const environments = {
       sqlite: () => {
-        if (!environmentRaw.includes('DB_PATH')) environment.push('DB_PATH: database.sqlite')
+        keepEnvironment.push('DB_PATH: database.sqlite')
+      },
+      mariadb: () => {
+        keepEnvironment.push('DB_HOST: localhost')
+        keepEnvironment.push('DB_USER: root')
+        keepEnvironment.push('DB_PASSWORD: root')
+        keepEnvironment.push('DB_PORT: 3606')
+        keepEnvironment.push('DB_NAME: mariadb')
       },
       postgres: () => {
-        if (!environmentRaw.includes('DB_HOST')) environment.push('DB_HOST: localhost')
-        if (!environmentRaw.includes('DB_USER')) environment.push('DB_USER: postgres')
-        if (!environmentRaw.includes('DB_PASSWORD')) environment.push('DB_PASSWORD: postgres')
-        if (!environmentRaw.includes('DB_PORT')) environment.push('DB_PORT: 5432')
-        if (!environmentRaw.includes('DB_NAME')) environment.push('DB_NAME: localhost')
+        keepEnvironment.push('DB_HOST: localhost')
+        keepEnvironment.push('DB_USER: postgres')
+        keepEnvironment.push('DB_PASSWORD: postgres')
+        keepEnvironment.push('DB_PORT: 5432')
+        keepEnvironment.push('DB_NAME: postgres')
       }
     }
 
@@ -77,7 +82,8 @@ export default class Instruction extends MineralModule {
       environments[payload.toLowerCase()]()
     }
 
-    await fs.writeFile(environmentLocation, environment.join(EOL))
+
+    await fs.writeFile(environmentLocation, keepEnvironment.join(EOL))
   }
 
   protected async writeConfig (root) {

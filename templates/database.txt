@@ -12,8 +12,8 @@ const databaseConfig: DatabaseConfig = {
     | SQLite
     |--------------------------------------------------------------------------
     |
-    | Configuration for the SQLite database.  Make sure to install the driver
-    | from npm when using this connection
+    | Configuration for the SQLite database.
+    | Make sure to install the driver from npm when using this connection
     |
     | npm i sqlite3
     |
@@ -28,14 +28,34 @@ const databaseConfig: DatabaseConfig = {
     | Postgres
     |--------------------------------------------------------------------------
     |
-    | Configuration for the SQLite database.  Make sure to install the driver
-    | from npm when using this connection
+    | Configuration for the Postgres database.
+    | Make sure to install the driver from npm when using this connection
     |
     | npm i pg
     |
     */
     postgres: {
       client: 'postgres',
+      host: environment.resolveKey('DB_HOST'),
+      user: environment.resolveKey('DB_USER'),
+      password: environment.resolveKey('DB_PASSWORD'),
+      port: environment.resolveKey('DB_PORT'),
+      database: environment.resolveKey('DB_NAME'),
+    },
+
+    /*
+    |--------------------------------------------------------------------------
+    | MariaDB
+    |--------------------------------------------------------------------------
+    |
+    | Configuration for the MariaDB database.
+    | Make sure to install the driver from npm when using this connection
+    |
+    | npm i mariadb
+    |
+    */
+    mariadb: {
+      client: 'mariadb',
       host: environment.resolveKey('DB_HOST'),
       user: environment.resolveKey('DB_USER'),
       password: environment.resolveKey('DB_PASSWORD'),
